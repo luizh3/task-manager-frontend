@@ -1,6 +1,6 @@
 function Badget({ color, text }) {
   return (
-    <span className={`${color} text-lg font-medium px-2 py-1 rounded`}>
+    <span className={`${color} font-medium md:text-sm p-1 px-2 rounded`}>
       {text}
     </span>
   );

@@ -1,9 +1,9 @@
-export default function MultiIconPreview({ iconsUrl }) {
+export default function MultiIconPreview({ iconsUrl, className }) {
   const nrLimitIcons = 3;
   const hasMoreIconsLimit = iconsUrl.length > nrLimitIcons;
   const nrLeftIcons = iconsUrl.length - nrLimitIcons;
   return (
-    <div className="flex -space-x-4 rtl:space-x-reverse">
+    <div className={`${className} flex -space-x-4 rtl:space-x-reverse`}>
       {iconsUrl.slice(0, nrLimitIcons).map((url, index) => (
         <img
           key={index}

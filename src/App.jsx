@@ -1,37 +1,15 @@
-import { useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import TaskCard from "./components/TaskCard/TaskCard";
-import TaskColumn from "./components/TaskColumn/TaskColumn";
-
-const inicialItems = [
-  { id: "111", content: "Conteúdo 1" },
-  { id: "222", content: "Conteúdo 2" },
-  { id: "333", content: "Conteúdo 3" },
-];
-
-const inicialColumns = [
-  {
-    name: "To do",
-    id: "123",
-    items: inicialItems,
-  },
-  {
-    name: "Doing",
-    id: "456",
-    items: [],
-  },
-  {
-    name: "Done",
-    id: "789",
-    items: [],
-  },
-];
+import { DragDropContext } from "react-beautiful-dnd";
+import TaskCard from "./components/TaskCard";
+import TaskColumn from "./components/TaskColumn";
+import Spinner from "./components/Spinner";
+import { useStatuses } from "./api/hooks/useStatuses";
+import ApiEndpoint from "./api/ApiEndpoint";
 
 function App() {
-  const [columns, setColumns] = useState(inicialColumns);
-  const [status, setStatus] = useState([]);
+  const [isLoading, statuses, setStatuses, columns, setColumns, dsError] =
+    useStatuses();
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     var sourceColumnItems = [];
     var destinationColumnItems = [];
 
@@ -73,6 +51,8 @@ function App() {
 
     destinationColumnItems.splice(result.destination.index, 0, draggedItem);
 
+    onItemChangeColum(draggedItem, columns[destinationColumnIndex].id);
+
     let columnsCopy = [...columns];
     columnsCopy[sourceColumnIndex].items = filteredSourceColumnItems;
     columnsCopy[destinationColumnIndex].items = destinationColumnItems;
@@ -80,59 +60,17 @@ function App() {
     setColumns(columnsCopy);
   };
 
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTgxNTc1MDgsInN1YiI6IjEifQ.Fzzg9VP9DDS7m08ljcEXSaIfS9JrySVxuPXHF1qBv9o";
-
-    async function fetchStatus() {
-      const options = {
-        method: "GET", // ou 'POST', 'PUT', etc.
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        signal: abortController.signal,
-      };
-      try {
-        const response = await fetch(
-          `http://127.0.0.1:5000/api/status/task`,
-          options
-        );
-
-        const json = await response.json();
-
-        const status = json.statuses?.map((status) => {
-          return {
-            id: status.id,
-            description: status.description,
-          };
-        });
-
-        const columnsTask = json.statuses?.map((status) => {
-          return {
-            id: status.id.toString(),
-            name: status.description,
-            items: status.tasks?.map((task) => {
-              return { ...task, id: task.id.toString() };
-            }),
-          };
-        });
-
-        console.log(columnsTask);
-        setColumns(columnsTask);
-        setStatus(status);
-      } catch (error) {
-        console.error(error.message);
-      }
-    }
-
-    fetchStatus();
-  }, []);
+  async function onItemChangeColum(item, newColumnId) {
+    await ApiEndpoint.updateStatusTask(item.id, newColumnId);
+  }
 
   return (
-    <div className="w-screen h-screen bg-gray-200">
+    <div className="w-screen min-h-screen	max-h-fit bg-gray-200">
+      {isLoading && (
+        <div className="flex min-h-screen	 items-center justify-center">
+          <Spinner />
+        </div>
+      )}
       <div className="flex h-full space-x-10 p-10">
         <DragDropContext onDragEnd={onDragEnd}>
           {columns.map((column) => (
