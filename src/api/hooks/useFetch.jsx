@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useFetch(options, dsUrl) {
+export function useFetch(options, dsUrl, triggerState = []) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({});
   const [dsError, setDsError] = useState("");
@@ -18,7 +18,6 @@ export function useFetch(options, dsUrl) {
         });
 
         const data = await response.json();
-        console.log(data);
 
         setData(data);
       } catch (error) {
@@ -36,7 +35,7 @@ export function useFetch(options, dsUrl) {
     return function () {
       abortController.abort();
     };
-  }, []);
+  }, triggerState);
 
   return { isLoading, data, dsError };
 }

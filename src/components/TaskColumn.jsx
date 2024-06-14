@@ -2,7 +2,7 @@ import { Droppable } from "react-beautiful-dnd";
 
 function TaskColumn({ column, children }) {
   return (
-    <div key={column.id} className="flex w-96 h-fit	">
+    <div key={column.id} className="flex min-w-72 h-fit">
       <Droppable droppableId={column.id} key={column.id}>
         {(provided) => (
           <div className="flex flex-col p-2.5 bg-gray-300 rounded w-full max-w-lg">

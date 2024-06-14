@@ -4,10 +4,15 @@ import TaskColumn from "./components/TaskColumn";
 import Spinner from "./components/Spinner";
 import { useStatuses } from "./api/hooks/useStatuses";
 import ApiEndpoint from "./api/ApiEndpoint";
+import TaskModal from "./components/TaskModal";
+import MembersListPopup from "./components/MembersListPopup";
+import { useState } from "react";
 
 function App() {
   const [isLoading, statuses, setStatuses, columns, setColumns, dsError] =
     useStatuses();
+
+  const [isVisibleEditModal, setIsVisibleEditModal] = useState(false);
 
   const onDragEnd = async (result) => {
     var sourceColumnItems = [];
@@ -65,24 +70,40 @@ function App() {
   }
 
   return (
-    <div className="w-screen min-h-screen	max-h-fit bg-gray-200">
-      {isLoading && (
-        <div className="flex min-h-screen	 items-center justify-center">
-          <Spinner />
-        </div>
+    <>
+      {isVisibleEditModal && (
+        <TaskModal
+          onClose={() => {
+            setIsVisibleEditModal(!isVisibleEditModal);
+          }}
+        />
       )}
-      <div className="flex h-full space-x-10 p-10">
-        <DragDropContext onDragEnd={onDragEnd}>
-          {columns.map((column) => (
-            <TaskColumn key={column.id} column={column}>
-              {column.items.map((item, index) => (
-                <TaskCard key={item.id} item={item} index={index} />
-              ))}
-            </TaskColumn>
-          ))}
-        </DragDropContext>
+      <div className="min-w-fit min-h-screen max-h-fit bg-gray-200">
+        {isLoading && (
+          <div className="flex min-h-screen items-center justify-center">
+            <Spinner />
+          </div>
+        )}
+        <div className="flex h-full space-x-10 p-10">
+          <DragDropContext onDragEnd={onDragEnd}>
+            {columns.map((column) => (
+              <TaskColumn key={column.id} column={column}>
+                {column.items.map((item, index) => (
+                  <TaskCard
+                    key={item.id}
+                    item={item}
+                    index={index}
+                    onClick={() => {
+                      setIsVisibleEditModal(!isVisibleEditModal);
+                    }}
+                  />
+                ))}
+              </TaskColumn>
+            ))}
+          </DragDropContext>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

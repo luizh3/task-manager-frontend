@@ -5,7 +5,8 @@ function url() {
 }
 
 function token() {
-  return LocalStorageHelper.getItem("token");
+  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTgyNDMyNTcsInN1YiI6IjEifQ.4FXGUu_NaIkxrtjBZEYBWz8ZInLD3NAViavZv9RcR5A";
+  // return LocalStorageHelper.getItem("token");
 }
 
 export default {
