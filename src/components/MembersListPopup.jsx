@@ -4,8 +4,7 @@ import Popup from "./Popup";
 import SelectionList from "./SelectionList";
 import { useMembers } from "../api/hooks/useMembers";
 
-export default function MembersListPopup({ onClose }) {
-  const [members, setMembers] = useState([]);
+export default function MembersListPopup({ onClose, members, setMembers }) {
   const [searchedMembers, setSearchedMembers] = useState([]);
   const [query, setQuery] = useState("");
 

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import Input from "./Input";
-import { RiDeleteRow } from "react-icons/ri";
+import { IoMdClose } from "react-icons/io";
+import Button from "./Button";
 
 export default function ListView({ onConfirmItem, initialItems, title }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -17,14 +18,14 @@ export default function ListView({ onConfirmItem, initialItems, title }) {
         <label className="font-medium text-gray-600">{title}</label>
       </header>
       {initialItems.length > 0 && (
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-2 max-h-32 overflow-auto">
           {initialItems?.map((item, index) => (
             <div
               key={index}
               className="flex justify-between w-full h-8 bg-white rounded flex justify-center align-center items-center space-x-1 font-medium shadow-md text-gray-600 p-4"
             >
-              <label className="">{item}</label>
-              <RiDeleteRow
+              <label className="">{item.description}</label>
+              <IoMdClose
                 className="text-red-500 cursor-pointer"
                 fontSize={20}
               />
@@ -33,13 +34,14 @@ export default function ListView({ onConfirmItem, initialItems, title }) {
         </div>
       )}
       {!isEditing && (
-        <button
+        <Button
           onClick={handleIsEditing}
-          className="w-full h-8 bg-gray-300 rounded flex justify-center align-center items-center space-x-1 shadow-md"
+          type="secundary"
+          icon={<IoMdAdd className="text-gray-700" />}
+          width="w-full"
         >
-          <label className="font-medium text-gray-600">Add</label>
-          <IoMdAdd className="text-gray-700" />
-        </button>
+          Add
+        </Button>
       )}
       {isEditing && (
         <Input

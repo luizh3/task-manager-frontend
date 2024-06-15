@@ -1,4 +1,4 @@
-export default function TextArea({ className, rows, placeHolder }) {
+export default function TextArea({ className, rows, placeHolder, onChange }) {
   return (
     <div className={className}>
       <textarea
@@ -7,6 +7,7 @@ export default function TextArea({ className, rows, placeHolder }) {
         type="password"
         rows={rows}
         placeholder={placeHolder}
+        onChange={onChange}
       />
     </div>
   );

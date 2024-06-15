@@ -9,7 +9,7 @@ export default function Modal({ title, children, width, onClose }) {
         } rounded p-6 space-y-8`}
       >
         <header className="flex justify-between">
-          <label className="font-medium text-xl">{title}</label>
+          <label className="font-medium text-3xl text-gray-600">{title}</label>
           <IoMdClose
             fontSize={25}
             onClick={onClose}

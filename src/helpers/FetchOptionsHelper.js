@@ -20,7 +20,19 @@ function put() {
   };
 }
 
+function post(data) {
+  return {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${ApiHelper.token()}`,
+    },
+    body: JSON.stringify(data),
+  };
+}
+
 export default {
   get,
   put,
+  post,
 };
