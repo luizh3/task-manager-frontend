@@ -1,5 +1,4 @@
 import SelectOption from "./SelectOption";
-import { PiSmileySad } from "react-icons/pi";
 
 export default function SelectionList({
   options,

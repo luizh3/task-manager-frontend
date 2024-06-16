@@ -5,13 +5,32 @@ import Spinner from "../components/Spinner";
 import { useStatuses } from "../api/hooks/useStatuses";
 import ApiEndpoint from "../api/ApiEndpoint";
 import TaskModal from "../components/TaskModal";
-import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { Toaster, toast } from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-function Board() {
+function Board({ isShowModalCreate }) {
   const [isLoading, statuses, setStatuses, columns, setColumns, dsError] =
     useStatuses();
 
-  const [isVisibleEditModal, setIsVisibleEditModal] = useState(false);
+  let location = useLocation();
+  let navigate = useNavigate();
+
+  console.log(location);
+
+  useEffect(() => {
+    // TODO change this
+    if (location.state?.toast) {
+      toast.success(location.state.toast.message);
+      setTimeout(
+        () => navigate(location.pathname, { replace: true, state: null }),
+        location.state.toast.duration
+      );
+    }
+  }, [location, navigate]);
+
+  const [isVisibleTaskModal, setIsVisibleTaskModal] = useOutletContext();
 
   const onDragEnd = async (result) => {
     var sourceColumnItems = [];
@@ -70,14 +89,17 @@ function Board() {
 
   return (
     <>
-      {isVisibleEditModal && (
+      <Toaster position="top-right" reverseOrder={false} />
+      {isVisibleTaskModal && (
         <TaskModal
           onClose={() => {
-            setIsVisibleEditModal(!isVisibleEditModal);
+            setIsVisibleTaskModal(!isVisibleTaskModal);
           }}
+          onSumitApiCall={ApiEndpoint.createTask}
+          titleModal="Criar tarefa"
         />
       )}
-      <div className="min-w-fit min-h-screen max-h-fit bg-gray-200">
+      <div className="min-w-fit min-h-screen max-h-fit bg-gray-200 ">
         {isLoading && (
           <div className="flex min-h-screen items-center justify-center">
             <Spinner />
@@ -88,14 +110,7 @@ function Board() {
             {columns.map((column) => (
               <TaskColumn key={column.id} column={column}>
                 {column.items.map((item, index) => (
-                  <TaskCard
-                    key={item.id}
-                    item={item}
-                    index={index}
-                    onClick={() => {
-                      setIsVisibleEditModal(!isVisibleEditModal);
-                    }}
-                  />
+                  <TaskCard key={item.id} item={item} index={index} />
                 ))}
               </TaskColumn>
             ))}

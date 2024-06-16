@@ -3,8 +3,12 @@ import MultiIconPreview from "./MultiIconPreview";
 import TypePriorityEnum from "../enums/TypePriorityEnum";
 import DataHelper from "../helpers/DataHelper";
 import PriorityBadget from "./PriorityBadget";
+import TaskModal from "./TaskModal";
+import { useState } from "react";
 
-function TaskCard({ item, index, onClick }) {
+function TaskCard({ item, index }) {
+  const [isVisibleTaskModal, setIsVisibleTaskModal] = useState(false);
+
   const iconMembers =
     item.members?.map(() => {
       return "https://www.pontotel.com.br/wp-content/uploads/2022/05/imagem-corporativa.jpg";
@@ -23,37 +27,54 @@ function TaskCard({ item, index, onClick }) {
       ? TypePriorityEnum.MEDIUM
       : TypePriorityEnum.LOW;
 
+  function handleClick() {
+    handleVisibleTaskModal();
+  }
+
+  function handleVisibleTaskModal() {
+    setIsVisibleTaskModal(!isVisibleTaskModal);
+  }
+
   return (
-    <Draggable draggableId={item.id} index={index} key={item.id}>
-      {(provided) => (
-        <div
-          onClick={onClick}
-          className={`bg-gray-100 rounded min-w-56 min-h-44 min-w-56 flex flex-col justify-between space-y-3 shadow-md border-l-4`}
-          {...provided.dragHandleProps}
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-          style={{
-            height: 40,
-            marginTop: 10,
-            padding: 15,
-            borderColor: dsColorPriorityBorder,
-            ...provided.draggableProps.style,
-          }}
-        >
-          <div className="text-lg font-medium  w-full">{item.title}</div>
-          <label>{item.description}</label>
-          <div className="flex justify-between items-center">
-            {nrDaysDelivery && (
-              <PriorityBadget
-                text={`Entrega em ${nrDaysDelivery} dias`}
-                typePriority={tpCardPriorityByDaysLeft}
-              />
-            )}
-            <MultiIconPreview iconsUrl={iconMembers} />
-          </div>
-        </div>
+    <>
+      {isVisibleTaskModal && (
+        <TaskModal
+          onClose={handleVisibleTaskModal}
+          item={item}
+          titleModal="Atualizar tarefa"
+        />
       )}
-    </Draggable>
+      <Draggable draggableId={item.id} index={index} key={item.id}>
+        {(provided) => (
+          <div
+            onClick={handleClick}
+            className={`bg-gray-100 rounded min-w-56 min-h-44 min-w-56 flex flex-col justify-between space-y-3 shadow-md border-l-4`}
+            {...provided.dragHandleProps}
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+            style={{
+              height: 40,
+              marginTop: 10,
+              padding: 15,
+              borderColor: dsColorPriorityBorder,
+              ...provided.draggableProps.style,
+            }}
+          >
+            <div className="text-lg font-medium  w-full">{item.title}</div>
+            <label>{item.description}</label>
+            <div className="flex justify-between items-center">
+              {nrDaysDelivery && (
+                <PriorityBadget
+                  text={`Entrega em ${nrDaysDelivery} dias`}
+                  typePriority={tpCardPriorityByDaysLeft}
+                />
+              )}
+              <MultiIconPreview iconsUrl={iconMembers} />
+            </div>
+          </div>
+        )}
+      </Draggable>
+    </>
   );
 }
 

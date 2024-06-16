@@ -10,13 +10,14 @@ function get() {
   };
 }
 
-function put() {
+function put(data = {}) {
   return {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${ApiHelper.token()}`,
     },
+    body: JSON.stringify(data),
   };
 }
 

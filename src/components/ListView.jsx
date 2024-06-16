@@ -36,7 +36,7 @@ export default function ListView({ onConfirmItem, initialItems, title }) {
       {!isEditing && (
         <Button
           onClick={handleIsEditing}
-          type="secundary"
+          styleType="secundary"
           icon={<IoMdAdd className="text-gray-700" />}
           width="w-full"
         >
@@ -52,10 +52,10 @@ export default function ListView({ onConfirmItem, initialItems, title }) {
           onFocus={() => {
             setIsEditing(true);
           }}
-          onBluer={() => {
+          onBlur={() => {
             setIsEditing(false);
           }}
-          onKeyPressed={(event) => {
+          onKeyPress={(event) => {
             if (event.key === "Enter") {
               onConfirmItem(text);
               setIsEditing(false);

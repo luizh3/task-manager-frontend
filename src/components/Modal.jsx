@@ -2,7 +2,7 @@ import { IoMdClose } from "react-icons/io";
 
 export default function Modal({ title, children, width, onClose }) {
   return (
-    <div className="flex justify-center items-center w-screen h-screen bg-black/20 absolute">
+    <div className="flex justify-center items-center w-screen h-screen bg-black/20 absolute fixed inset-0 ">
       <div
         className={`bg-white min-h-96 h-fit ${
           width ?? "w-1/3"

@@ -13,7 +13,7 @@ export default function MultiIconPreview({ iconsUrl, className }) {
         />
       ))}
       {hasMoreIconsLimit && (
-        <div className="w-8 h-8 border-2 border-white rounded-full bg-blue-500 text-white text-center shadow-md">
+        <div className="w-8 h-8 border-2 border-white rounded-full bg-violet-500 text-white text-center shadow-md">
           +{nrLeftIcons}
         </div>
       )}

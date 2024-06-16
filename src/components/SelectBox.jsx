@@ -1,13 +1,22 @@
-export default function SelectBox({ options, placeHolder, onChange }) {
+export default function SelectBox({
+  options,
+  onChange,
+  register,
+  validation,
+  id,
+}) {
+  const selectedOption =
+    options.find((option) => {
+      return option.selected;
+    }) ?? options[0];
+
   return (
     <select
-      id="countries"
       className="bg-gray-200 border-2 border-gray-200 text-gray-600 rounded w-full py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
       onChange={onChange}
+      defaultValue={selectedOption.value}
+      {...(register ? register(id, validation) : {})}
     >
-      <option selected disabled hidden>
-        {placeHolder}
-      </option>
       {options?.map((optionObject) => (
         <option
           key={optionObject.value}

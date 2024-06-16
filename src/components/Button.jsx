@@ -1,4 +1,11 @@
-export default function Button({ type, children, width, icon, onClick }) {
+export default function Button({
+  styleType,
+  children,
+  width,
+  icon,
+  onClick,
+  ...rest
+}) {
   const styleByType = new Map([
     ["primary", "bg-violet-500 text-white hover:bg-violet-300"],
     [
@@ -7,10 +14,11 @@ export default function Button({ type, children, width, icon, onClick }) {
     ],
   ]);
 
-  const dsStyle = styleByType.get(type) ?? "";
+  const dsStyle = styleByType.get(styleType) ?? "";
 
   return (
     <button
+      {...rest}
       onClick={onClick}
       className={`${dsStyle} ${
         width ?? "w-40"
