@@ -3,7 +3,7 @@ import Button from "./Button";
 
 export default function Navbar({ onCreate }) {
   return (
-    <div className="bg-white w-screen h-20 shadow-md border-b border-gray-300 flex items-center p-6 space-x-12 justify-center fixed">
+    <div className="bg-white w-screen h-20 mb-5	shadow-md border-b border-gray-300 flex items-center p-6 space-x-12 justify-center fixed">
       <div className="flex items-center space-x-3">
         <FcNightLandscape
           style={{

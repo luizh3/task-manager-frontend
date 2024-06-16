@@ -4,7 +4,12 @@ import Input from "./Input";
 import { IoMdClose } from "react-icons/io";
 import Button from "./Button";
 
-export default function ListView({ onConfirmItem, initialItems, title }) {
+export default function ListView({
+  onConfirmItem,
+  onDeleteItem,
+  initialItems,
+  title,
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState("");
 
@@ -28,6 +33,9 @@ export default function ListView({ onConfirmItem, initialItems, title }) {
               <IoMdClose
                 className="text-red-500 cursor-pointer"
                 fontSize={20}
+                onClick={() => {
+                  onDeleteItem(item);
+                }}
               />
             </div>
           ))}
@@ -53,6 +61,9 @@ export default function ListView({ onConfirmItem, initialItems, title }) {
             setIsEditing(true);
           }}
           onBlur={() => {
+            if (text !== "") {
+              onConfirmItem(text);
+            }
             setIsEditing(false);
           }}
           onKeyPress={(event) => {

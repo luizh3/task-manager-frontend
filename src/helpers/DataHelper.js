@@ -30,7 +30,17 @@ function daysToDate(first, second) {
   return Math.floor(differenceInDays);
 }
 
+function toWithoutSeconds(date) {
+  if (!isValid(date)) {
+    return null;
+  }
+
+  const lenghtDateWithoutSeconds = 16;
+  return date.slice(0, lenghtDateWithoutSeconds);
+}
+
 export default {
   daysToDate,
   isValid,
+  toWithoutSeconds,
 };

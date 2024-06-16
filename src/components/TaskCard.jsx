@@ -1,10 +1,10 @@
 import { Draggable } from "react-beautiful-dnd";
 import MultiIconPreview from "./MultiIconPreview";
 import TypePriorityEnum from "../enums/TypePriorityEnum";
-import DataHelper from "../helpers/DataHelper";
-import PriorityBadget from "./PriorityBadget";
 import TaskModal from "./TaskModal";
 import { useState } from "react";
+import ApiEndpoint from "../api/ApiEndpoint";
+import LimitDateBadget from "./LimitDateBadget";
 
 function TaskCard({ item, index }) {
   const [isVisibleTaskModal, setIsVisibleTaskModal] = useState(false);
@@ -15,17 +15,6 @@ function TaskCard({ item, index }) {
     }) ?? [];
 
   const dsColorPriorityBorder = TypePriorityEnum.colorByType(item.priority);
-
-  console.log(dsColorPriorityBorder);
-
-  const nrDaysDelivery = DataHelper.daysToDate(item.dh_limit, item.dh_created);
-
-  const tpCardPriorityByDaysLeft =
-    nrDaysDelivery < 15
-      ? TypePriorityEnum.URGENT
-      : nrDaysDelivery < 30
-      ? TypePriorityEnum.MEDIUM
-      : TypePriorityEnum.LOW;
 
   function handleClick() {
     handleVisibleTaskModal();
@@ -42,6 +31,9 @@ function TaskCard({ item, index }) {
           onClose={handleVisibleTaskModal}
           item={item}
           titleModal="Atualizar tarefa"
+          onSumitCallback={ApiEndpoint.updateTask}
+          successMessage="Tarefa atualizada com sucesso!"
+          errorMessage="Falha ao atualizadar tarefa!"
         />
       )}
       <Draggable draggableId={item.id} index={index} key={item.id}>
@@ -63,10 +55,10 @@ function TaskCard({ item, index }) {
             <div className="text-lg font-medium  w-full">{item.title}</div>
             <label>{item.description}</label>
             <div className="flex justify-between items-center">
-              {nrDaysDelivery && (
-                <PriorityBadget
-                  text={`Entrega em ${nrDaysDelivery} dias`}
-                  typePriority={tpCardPriorityByDaysLeft}
+              {item && item.dh_limit && (
+                <LimitDateBadget
+                  dhLimit={item?.dh_limit}
+                  dhCreated={item?.dh_created}
                 />
               )}
               <MultiIconPreview iconsUrl={iconMembers} />

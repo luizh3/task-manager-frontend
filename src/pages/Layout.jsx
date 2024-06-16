@@ -10,10 +10,12 @@ export default function Layout() {
   }
 
   return (
-    <div className="flex flex-col space-y-20">
+    <div className="flex flex-col w-screen h-screen">
       <Navbar onCreate={handleVisibleTaskModal} />
       {/* // TODO change for useDispatch */}
-      <Outlet context={[isVisibleTaskModal, setIsVisibleTaskModal]} />
+      <div className="mt-20">
+        <Outlet context={[isVisibleTaskModal, setIsVisibleTaskModal]} />
+      </div>
     </div>
   );
 }

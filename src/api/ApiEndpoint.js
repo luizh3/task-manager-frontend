@@ -46,8 +46,31 @@ async function updateTask(request) {
   }
 }
 
+async function deleteTask(idTask) {
+  try {
+    const response = await fetch(
+      `${ApiHelper.url()}/task/${idTask}`,
+      FetchOptionsHelper.deleteMethod()
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { error: data?.message ?? "Falha ao deletar task!" };
+    }
+
+    console.log(data);
+
+    return { data };
+  } catch (error) {
+    console.error(error.message);
+    return { error };
+  }
+}
+
 export default {
   updateStatusTask,
   createTask,
   updateTask,
+  deleteTask,
 };

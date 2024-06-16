@@ -6,12 +6,18 @@ export default function Input({
   register,
   validation,
   error,
+  label,
   ...rest
 }) {
+  const focusBorderColor = error
+    ? "focus-within:border-red-500"
+    : "focus-within:border-purple-500";
+
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col space-y-2 w-full">
+      {label && <label className="text-gray-600 font-medium">{label}</label>}
       <div
-        className={`${className} flex justify-between bg-gray-200 h-11 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus-within:bg-white focus-within:border-purple-500`}
+        className={`${className} ${focusBorderColor} flex justify-between bg-gray-200 h-11 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus-within:bg-white`}
       >
         <input
           className="bg-gray-200 focus:outline-none focus:bg-white flex-grow"

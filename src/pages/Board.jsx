@@ -89,23 +89,37 @@ function Board({ isShowModalCreate }) {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          className: "shadow-md",
+          style: {
+            padding: "16px",
+          },
+        }}
+        containerStyle={{
+          top: 100,
+        }}
+      />
       {isVisibleTaskModal && (
         <TaskModal
           onClose={() => {
             setIsVisibleTaskModal(!isVisibleTaskModal);
           }}
-          onSumitApiCall={ApiEndpoint.createTask}
+          onSumitCallback={ApiEndpoint.createTask}
           titleModal="Criar tarefa"
+          successMessage="Tarefa criada com sucesso!"
+          errorMessage="Falha ao criar tarefa!"
         />
       )}
-      <div className="min-w-fit min-h-screen max-h-fit bg-gray-200 ">
+      <div className="min-w-fit min-h-screen max-h-fit bg-gray-200">
         {isLoading && (
           <div className="flex min-h-screen items-center justify-center">
             <Spinner />
           </div>
         )}
-        <div className="flex h-full space-x-10 p-10">
+        <div className="flex h-full space-x-3 p-10">
           <DragDropContext onDragEnd={onDragEnd}>
             {columns.map((column) => (
               <TaskColumn key={column.id} column={column}>

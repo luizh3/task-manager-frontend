@@ -10,10 +10,14 @@ import ButtonOption from "./ButtonOption";
 import IconCircle from "./iconCircle";
 import CardHeader from "./CardHeader";
 import { TiUserAddOutline } from "react-icons/ti";
+import { MdDeleteOutline } from "react-icons/md";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import ApiEndpoint from "../api/ApiEndpoint";
+import DataHelper from "../helpers/DataHelper";
+import LimitDateBadget from "./LimitDateBadget";
 
 // TODO change for options from backend
 const priorityOptionsDefault = [
@@ -41,13 +45,15 @@ export default function TaskModal({
   titleModal,
   item,
   onClose,
-  onSumitApiCall,
+  onSumitCallback,
+  successMessage,
+  errorMessage,
 }) {
   const { register, formState, handleSubmit } = useForm({
     defaultValues: {
       title: item?.title,
       description: item?.description,
-      dh_limit: item?.dh_limit,
+      dh_limit: DataHelper.toWithoutSeconds(item?.dh_limit),
       priority: item?.priority,
     },
   });
@@ -84,7 +90,6 @@ export default function TaskModal({
     : priorityOptionsDefault;
 
   function handleAddArtefact(text) {
-    console.log(text);
     setArtefacts((artefacts) => {
       return [
         ...artefacts,
@@ -96,6 +101,12 @@ export default function TaskModal({
     });
   }
 
+  function handleRemoveArtefact(item) {
+    setArtefacts((artefacts) => {
+      return artefacts.filter((artefact) => artefact.index !== item.index);
+    });
+  }
+
   function handleVisibleMembersPopup(event) {
     event.preventDefault();
     setIsVisibleMembersPopup(!isVisibleMembersPopup);
@@ -103,6 +114,7 @@ export default function TaskModal({
 
   const onSubmit = async ({ title, description, priority, dh_limit }) => {
     const request = {
+      id: item?.id,
       title,
       description,
       priority,
@@ -117,44 +129,72 @@ export default function TaskModal({
 
     console.log(request);
 
-    try {
-      onSumitApiCall(request);
-      navigateTo("/", {
-        state: {
-          toast: {
-            type: "success",
-            message: "Sucesso ao criar task!",
-            duration: 3000,
-          },
-        },
-      });
-      navigateTo(0);
-    } catch (error) {
-      console.error(error);
-      toast.error("Falha ao criar task!");
+    const { error } = await onSumitCallback(request);
+
+    if (error) {
+      toast.error(errorMessage);
       return;
     }
+
+    navigateTo("/", {
+      state: {
+        toast: {
+          type: "success",
+          message: successMessage,
+          duration: 3000,
+        },
+      },
+    });
+    navigateTo(0);
+  };
+
+  const deleteTask = async (event) => {
+    event.preventDefault();
+
+    const { error } = await ApiEndpoint.deleteTask(item.id);
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    navigateTo("/", {
+      state: {
+        toast: {
+          type: "success",
+          message: "Tarefa excluida com sucesso!",
+          duration: 3000,
+        },
+      },
+    });
+    navigateTo(0);
   };
 
   return (
     <Modal title={titleModal} width="w-2/4" onClose={onClose}>
+      {item && item.dh_limit && (
+        <LimitDateBadget
+          dhLimit={item?.dh_limit}
+          dhCreated={item?.dh_created}
+        />
+      )}
       <form
         className="flex flex-col space-y-8"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex w-full space-x-3">
-          <div className="w-3/4 space-y-8">
+          <div className="w-3/4 space-y-4">
             <Input
               id="title"
-              placeHolder={"Titulo"}
               register={register}
               validation={{ required: "This field is required" }}
               error={errors?.title?.message}
+              label="Titulo"
             />
             <TextArea
               rows={4}
               id="description"
-              placeHolder="Descricao"
+              label="Descricao"
               register={register}
               validation={{ required: "This field is required" }}
               error={errors?.description?.message}
@@ -163,13 +203,14 @@ export default function TaskModal({
             <div className="flex space-x-3">
               <SelectBox
                 id="priority"
+                label="Prioridade"
                 options={priorityOptions}
                 register={register}
                 validation={{ required: "This field is required" }}
               />
               <Input
                 id="dh_limit"
-                placeHolder="Data vencimento"
+                label="Data vencimento"
                 type="datetime-local"
                 register={register}
               />
@@ -177,6 +218,7 @@ export default function TaskModal({
             <ListView
               onConfirmItem={handleAddArtefact}
               initialItems={artefacts}
+              onDeleteItem={handleRemoveArtefact}
               title="Artefatos"
             />
           </div>
@@ -186,6 +228,11 @@ export default function TaskModal({
                 icon={<TiUserAddOutline />}
                 message="Membros"
                 onClick={handleVisibleMembersPopup}
+              ></ButtonOption>
+              <ButtonOption
+                icon={<MdDeleteOutline />}
+                message="Excluir"
+                onClick={deleteTask}
               ></ButtonOption>
               {isVisibleMembersPopup && (
                 <MembersListPopup
@@ -200,6 +247,11 @@ export default function TaskModal({
                 {members?.map((member) => (
                   <IconCircle key={member.id} url={member.url} />
                 ))}
+                {!members?.length && (
+                  <div className="font-medium text-sm text-gray-500">
+                    Nenhum membro!
+                  </div>
+                )}
               </div>
             </CardHeader>
           </div>

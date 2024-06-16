@@ -32,8 +32,19 @@ function post(data) {
   };
 }
 
+function deleteMethod() {
+  return {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${ApiHelper.token()}`,
+    },
+  };
+}
+
 export default {
   get,
   put,
   post,
+  deleteMethod,
 };
