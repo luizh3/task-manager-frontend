@@ -245,7 +245,11 @@ export default function TaskModal({
             <CardHeader title={"Membros"}>
               <div className="flex">
                 {members?.map((member) => (
-                  <IconCircle key={member.id} url={member.url} />
+                  <IconCircle
+                    key={member.id}
+                    url={member.url}
+                    description={member.description}
+                  />
                 ))}
                 {!members?.length && (
                   <div className="font-medium text-sm text-gray-500">

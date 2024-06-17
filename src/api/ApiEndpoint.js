@@ -8,9 +8,12 @@ async function updateStatusTask(idItem, idStatus) {
       FetchOptionsHelper.put()
     );
 
-    console.log(await response.json());
+    const data = await response.json();
+
+    return { data };
   } catch (error) {
     console.error(error.message);
+    return { error };
   }
 }
 

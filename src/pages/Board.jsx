@@ -84,7 +84,14 @@ function Board({ isShowModalCreate }) {
   };
 
   async function onItemChangeColum(item, newColumnId) {
-    await ApiEndpoint.updateStatusTask(item.id, newColumnId);
+    const { error } = await ApiEndpoint.updateStatusTask(item.id, newColumnId);
+
+    if (error) {
+      toast.error("Falha ao atualizar task!");
+      return;
+    }
+
+    toast.success("Sucesso ao atualizar task!");
   }
 
   return (
