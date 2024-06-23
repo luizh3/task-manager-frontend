@@ -71,9 +71,55 @@ async function deleteTask(idTask) {
   }
 }
 
+async function deleteUser(idUser) {
+  try {
+    const response = await fetch(
+      `${ApiHelper.url()}/user/${idUser}`,
+      FetchOptionsHelper.deleteMethod()
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { error: data?.message ?? "Falha ao deletar Usuario!" };
+    }
+
+    console.log(data);
+
+    return { data };
+  } catch (error) {
+    console.error(error.message);
+    return { error };
+  }
+}
+
+async function updateUser(idUser, request) {
+  try {
+    const response = await fetch(
+      `${ApiHelper.url()}/user/${idUser}`,
+      FetchOptionsHelper.put(request)
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { error: data?.message ?? "Falha ao atualizar Usuario!" };
+    }
+
+    console.log(data);
+
+    return { data };
+  } catch (error) {
+    console.error(error.message);
+    return { error };
+  }
+}
+
 export default {
   updateStatusTask,
   createTask,
   updateTask,
   deleteTask,
+  deleteUser,
+  updateUser,
 };

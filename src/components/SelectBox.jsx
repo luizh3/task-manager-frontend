@@ -18,7 +18,7 @@ export default function SelectBox({
       <select
         className="bg-gray-200 border-2 border-gray-200 text-gray-600 rounded w-full py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
         onChange={onChange}
-        defaultValue={selectedOption.value}
+        defaultValue={selectedOption ? selectedOption.value : undefined}
         {...(register ? register(id, validation) : {})}
       >
         {options?.map((optionObject) => (

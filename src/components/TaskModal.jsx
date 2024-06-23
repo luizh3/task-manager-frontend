@@ -199,7 +199,6 @@ export default function TaskModal({
               validation={{ required: "This field is required" }}
               error={errors?.description?.message}
             />
-
             <div className="flex space-x-3">
               <SelectBox
                 id="priority"
@@ -229,11 +228,13 @@ export default function TaskModal({
                 message="Membros"
                 onClick={handleVisibleMembersPopup}
               ></ButtonOption>
-              <ButtonOption
-                icon={<MdDeleteOutline />}
-                message="Excluir"
-                onClick={deleteTask}
-              ></ButtonOption>
+              {item?.id && (
+                <ButtonOption
+                  icon={<MdDeleteOutline />}
+                  message="Excluir"
+                  onClick={deleteTask}
+                ></ButtonOption>
+              )}
               {isVisibleMembersPopup && (
                 <MembersListPopup
                   onClose={handleVisibleMembersPopup}
@@ -243,7 +244,7 @@ export default function TaskModal({
               )}
             </OptionsCard>
             <CardHeader title={"Membros"}>
-              <div className="flex">
+              <div className="flex space-x-1">
                 {members?.map((member) => (
                   <IconCircle
                     key={member.id}

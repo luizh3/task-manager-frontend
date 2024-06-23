@@ -10,7 +10,7 @@ export function useStatuses() {
 
   useEffect(() => {
     const statuses =
-      data.statuses?.map((status) => {
+      data?.statuses?.map((status) => {
         return {
           id: status.id,
           description: status.description,
@@ -18,7 +18,7 @@ export function useStatuses() {
       }) ?? [];
 
     const columnsTask =
-      data.statuses
+      data?.statuses
         ?.map((status) => {
           return {
             id: status.id.toString(),

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export function useFetch(options, dsUrl, triggerState = []) {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState({});
+  const [data, setData] = useState(undefined);
   const [dsError, setDsError] = useState("");
 
   useEffect(() => {
