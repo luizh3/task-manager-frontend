@@ -35,9 +35,10 @@ export default function UserModal({ onClose, user }) {
   const { errors } = formState;
 
   const onSubmit = async ({ username, password, role }) => {
+    console.log(username, password, role);
     const request = {
       username,
-      password: password ?? undefined,
+      password,
       roles: [
         {
           id: role,
@@ -56,7 +57,7 @@ export default function UserModal({ onClose, user }) {
       state: {
         toast: {
           type: "success",
-          message: "Sucesso ao deletar usuario!",
+          message: "Sucesso ao atualizar usuario!",
           duration: 3000,
         },
       },
@@ -74,7 +75,7 @@ export default function UserModal({ onClose, user }) {
           <IconCircle
             imageHeight="h-20"
             imageWidth="w-20"
-            url="https://blog.meupetclub.com.br/wp-content/uploads/2023/08/cachorrinho-feliz-sorrindo-em-fundo-roxo-isolado-scaled.jpg"
+            url="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQgByBT5IiAT_a2x9pUVb4VMoOrlzHH7Jrzj-HB5jzHlR4lNLMS" // TODO change this for get from user
           />
           <Input
             id="username"

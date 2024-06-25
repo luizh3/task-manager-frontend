@@ -10,14 +10,12 @@ import { Toaster, toast } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-function Board({ isShowModalCreate }) {
+function Board() {
   const [isLoading, statuses, setStatuses, columns, setColumns, dsError] =
     useStatuses();
 
   let location = useLocation();
   let navigate = useNavigate();
-
-  console.log(location);
 
   useEffect(() => {
     // TODO change this

@@ -19,7 +19,7 @@ export default function TableUsers({ users, navigate }) {
       columns: [
         {
           image_url:
-            "https://blog.meupetclub.com.br/wp-content/uploads/2023/08/cachorrinho-feliz-sorrindo-em-fundo-roxo-isolado-scaled.jpg",
+            "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQgByBT5IiAT_a2x9pUVb4VMoOrlzHH7Jrzj-HB5jzHlR4lNLMS", // TODO change this for get from useri
           description: user.username,
           style: "flex items-center gap-4",
         },
@@ -28,7 +28,7 @@ export default function TableUsers({ users, navigate }) {
             user?.roles.map((role) => {
               return {
                 color: "bg-green-100 text-green-800",
-                description: role.type,
+                description: role.type.toUpperCase(),
               };
             }) ?? [],
         },
@@ -50,7 +50,7 @@ export default function TableUsers({ users, navigate }) {
                 const { error } = await ApiEndpoint.deleteUser(user.id);
 
                 if (error) {
-                  toast.error("Falha ao deletar usuario!");
+                  toast.error(error);
                   return;
                 }
 

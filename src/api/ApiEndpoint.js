@@ -115,6 +115,50 @@ async function updateUser(idUser, request) {
   }
 }
 
+async function login(request) {
+  try {
+    const response = await fetch(
+      `${ApiHelper.url()}/session/authenticate`,
+      FetchOptionsHelper.post(request)
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { error: data?.message ?? "Falha ao autenticar Usuario!" };
+    }
+
+    console.log(data);
+
+    return { data };
+  } catch (error) {
+    console.error(error.message);
+    return { error };
+  }
+}
+
+async function register(request) {
+  try {
+    const response = await fetch(
+      `${ApiHelper.url()}/user`,
+      FetchOptionsHelper.post(request)
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { error: data?.message ?? "Falha ao registrar Usuario!" };
+    }
+
+    console.log(data);
+
+    return { data };
+  } catch (error) {
+    console.error(error.message);
+    return { error };
+  }
+}
+
 export default {
   updateStatusTask,
   createTask,
@@ -122,4 +166,6 @@ export default {
   deleteTask,
   deleteUser,
   updateUser,
+  login,
+  register,
 };

@@ -11,7 +11,7 @@ function TaskCard({ item, index }) {
 
   const iconMembers =
     item.members?.map(() => {
-      return "https://www.pontotel.com.br/wp-content/uploads/2022/05/imagem-corporativa.jpg";
+      return "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQgByBT5IiAT_a2x9pUVb4VMoOrlzHH7Jrzj-HB5jzHlR4lNLMS"; // TODO change this for get from user
     }) ?? [];
 
   const dsColorPriorityBorder = TypePriorityEnum.colorByType(item.priority);

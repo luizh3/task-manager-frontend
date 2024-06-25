@@ -1,5 +1,15 @@
+.background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url("./../../assets/login-backgorund.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 .container {
-  width: 450px;
+  width: 100%;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.2);
