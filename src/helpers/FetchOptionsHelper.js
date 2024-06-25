@@ -5,7 +5,7 @@ function get() {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ApiHelper.token()}`,
+      Authorization: `${ApiHelper.token()}`,
     },
   };
 }
@@ -15,7 +15,7 @@ function put(data = {}) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ApiHelper.token()}`,
+      Authorization: `${ApiHelper.token()}`,
     },
     body: JSON.stringify(data),
   };
@@ -26,7 +26,7 @@ function post(data) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ApiHelper.token()}`,
+      Authorization: `${ApiHelper.token()}`,
     },
     body: JSON.stringify(data),
   };
@@ -37,7 +37,7 @@ function deleteMethod() {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ApiHelper.token()}`,
+      Authorization: `${ApiHelper.token()}`,
     },
   };
 }

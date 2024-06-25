@@ -1,19 +1,25 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import "./Login.css";
 import ApiEndpoint from "../../api/ApiEndpoint";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
+import { Context } from "../../context/AuthContext";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { handleLogin, handleLogout } = useContext(Context);
 
   let navigate = useNavigate();
   let location = useLocation();
 
   useEffect(() => {
     // TODO change this
+
+    handleLogout();
+
     if (location.state?.toast) {
       toast.success(location.state.toast.message);
       setTimeout(
@@ -26,7 +32,7 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { error } = await ApiEndpoint.login({
+    const { error, data } = await ApiEndpoint.login({
       username,
       password,
     });
@@ -35,6 +41,8 @@ export default function Login() {
       toast.error("Falha ao realizar o login!");
       return;
     }
+
+    handleLogin(data.token);
 
     navigate("/");
   };
