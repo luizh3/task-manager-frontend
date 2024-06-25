@@ -18,7 +18,7 @@ export default function MembersListPopup({ onClose, members, setMembers }) {
         return {
           id: user.id,
           description: user.username,
-          url: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQgByBT5IiAT_a2x9pUVb4VMoOrlzHH7Jrzj-HB5jzHlR4lNLMS",
+          url: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQgByBT5IiAT_a2x9pUVb4VMoOrlzHH7Jrzj-HB5jzHlR4lNLMS", // TODO change this for get from user
         };
       })
       .filter((user) => !idMembers.includes(user.id));
