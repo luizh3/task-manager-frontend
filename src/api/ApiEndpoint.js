@@ -125,7 +125,7 @@ async function login(request) {
     const data = await response.json();
 
     if (!response.ok) {
-      return { error: data?.message ?? "Falha ao autenticar Usuario!" };
+      return { error: data?.message ?? "Falha ao realizar o login!" };
     }
 
     console.log(data);

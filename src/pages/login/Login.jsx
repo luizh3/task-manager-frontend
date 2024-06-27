@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import "./Login.css";
 import ApiEndpoint from "../../api/ApiEndpoint";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import { Context } from "../../context/AuthContext";
 
@@ -38,7 +38,7 @@ export default function Login() {
     });
 
     if (error) {
-      toast.error("Falha ao realizar o login!");
+      toast.error(error);
       return;
     }
 
@@ -98,7 +98,7 @@ export default function Login() {
             <button type="submit">Login</button>
             <div className="signup-link">
               <p>
-                Não tem uma conta? <a href="#">Registar</a>{" "}
+                Não tem uma conta? <Link to="/register">Registar</Link>
               </p>
             </div>
           </form>
